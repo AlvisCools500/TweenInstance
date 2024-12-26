@@ -19,10 +19,9 @@ public class World extends Instance {
 
     @Override
     public void addChild(Instance targInst) {
-        TargetCanvas.addInstance(targInst);
-
         super.addChild(targInst);
 
+        TargetCanvas.addInstance(targInst);
     }
 
     @Override

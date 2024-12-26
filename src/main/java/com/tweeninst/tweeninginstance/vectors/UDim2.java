@@ -1,5 +1,8 @@
 package com.tweeninst.tweeninginstance.vectors;
 
+import com.tweeninst.tweeninginstance.instances.WorldCanvas;
+import com.tweeninst.tweeninginstance.*;
+
 public class UDim2 {
     public UDim x;
     public UDim y;
@@ -15,8 +18,16 @@ public class UDim2 {
     }
 
     public VectorDouble2D GetAbsolute(VectorDouble2D MainRatio) {
-        int Width = 500;
-        int Height = 500;
+        double Width;
+        double Height;
+
+        if (MainRatio != null) {
+            Width = MainRatio.x;
+            Height = MainRatio.y;
+        }else {
+            Width = mainApp.canvas.getWidth();
+            Height = mainApp.canvas.getHeight();
+        }
 
 
         VectorDouble2D ResVect = new VectorDouble2D(Width, Height);

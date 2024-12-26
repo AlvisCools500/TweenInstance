@@ -81,6 +81,7 @@ public class mainApp extends Application {
 
     private void OnStart() {
         Frame frame = new Frame();
+        frame.properties.setSize(new UDim2(0.4,0,0.4,0));
     }
 
 }

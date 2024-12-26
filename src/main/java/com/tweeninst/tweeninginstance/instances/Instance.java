@@ -17,7 +17,7 @@ public class Instance {
     public UUID uuid = UUID.randomUUID();
     public IEnum.IsA type = IEnum.IsA.Non;
     public String name = "Instance";
-    private PackListener listeners = new PackListener();
+    public PackListener listeners = new PackListener();
     public Shape objectAbstract;
 
     public Instance() {
@@ -75,5 +75,13 @@ public class Instance {
         }
 
         return null;
+    }
+
+    public VectorDouble2D getAbsolutePos() {
+     return new VectorDouble2D(0,0);
+    }
+
+    public VectorDouble2D getAbsoluteSize() {
+        return new VectorDouble2D(100,100);
     }
 }

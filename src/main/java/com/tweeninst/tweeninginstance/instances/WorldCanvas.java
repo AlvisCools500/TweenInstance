@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class WorldCanvas extends Pane {
@@ -15,6 +16,7 @@ public class WorldCanvas extends Pane {
     private void clearChildren() {
         Platform.runLater(() -> {
             this.getChildren().clear();
+
         });
     }
 
@@ -22,11 +24,22 @@ public class WorldCanvas extends Pane {
         System.out.println("Updating");
 
         clearChildren();
+        ListInstance.clear();
+
 
         ArrayList<Integer> sortedZ = new ArrayList<>();
 
-        for (var v : ListInstance.entrySet()) {
-            sortedZ.add(v.getKey());
+        for (var a : ListAdded.entrySet()) {
+            Instance v = ListAdded.get(a.getKey());
+
+            int ZIndex = v.properties.getZIndex();
+
+            if (ListInstance.get(ZIndex) == null) {
+                ListInstance.put(ZIndex, new ArrayList<>());
+                sortedZ.add(ZIndex);
+            }
+
+            ListInstance.get(ZIndex).add(v);
         }
 
         sortedZ.sort(Integer::compareTo);
@@ -34,13 +47,16 @@ public class WorldCanvas extends Pane {
         for (int ZIndex : sortedZ) {
             for (Instance inst : ListInstance.get(ZIndex)) {
                 if (inst.objectAbstract != null) {
-                    this.getChildren().add(inst.objectAbstract);
+                    System.out.println("adding " + inst.type);
+                    Platform.runLater(() -> {
+                        this.getChildren().add(inst.objectAbstract);
+                    });
                 }else {
-                    System.out.println("This instance has to Abstract");
+                    System.out.println("This instance has no Abstract");
                 }
             }
         }
-        System.out.println(this.getChildren());
+
         System.out.println("Root Updated! " + ListAdded.size() + " Total");
     }
 
@@ -49,17 +65,6 @@ public class WorldCanvas extends Pane {
         if (ListAdded.get(inst.uuid) == null) {
             ListAdded.put(inst.uuid, inst);
 
-            int ZIndex;
-
-            if (inst.properties.get(IEnum.Properties.ZIndex) != null) {
-                ZIndex = inst.properties.getZIndex();
-            }else {
-                ZIndex = 0;
-            }
-
-            if (ListInstance.get(ZIndex) == null) {
-                ListInstance.put(ZIndex,new ArrayList<>());
-            }
 
             updateRoot();
         }else {
