@@ -10,7 +10,7 @@ import javafx.scene.shape.Shape;
 import java.util.UUID;
 
 public class Instance {
-    public HashProperty properties = new HashProperty();
+    public HashPropertyObservable properties = new HashPropertyObservable();
     public Instance parent;
     Instance previousParent;
     public HashChildren childrens = new HashChildren();
@@ -37,10 +37,12 @@ public class Instance {
         }
 
         targetInst.addChild(this);
+
+        mainApp.world.callUpdateRoot();
     }
 
     public void addChild(Instance targInst) {
-        System.out.println("addchild " + targInst.type + " to " + type + " ClassTarget: " + targInst.getClass().getSimpleName());
+        //System.out.println("addchild " + targInst.type + " to " + type + " ClassTarget: " + targInst.getClass().getSimpleName());
         if (targInst.parent == null) {
             targInst.parent = this;
             this.childrens.put(targInst.uuid, targInst);

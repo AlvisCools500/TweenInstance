@@ -12,44 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class HashProperty extends NaturalProperty implements ObservableValue<NaturalProperty> {
-
-    List<ChangeListener<NaturalProperty>> ListListeners = new ArrayList<>();
-
-    @Override
-    public void addListener(ChangeListener<? super NaturalProperty> listener) {
-        ListListeners.add((ChangeListener<NaturalProperty>) listener);
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super NaturalProperty> listener) {
-        ListListeners.remove(listener);
-    }
-
-    @Override
-    public NaturalProperty getValue() {
-        return null;
-    }
-
-    private void CallListeners(NaturalProperty prevProp, NaturalProperty newProp) {
-        for (ChangeListener<NaturalProperty> listener : ListListeners) {
-            listener.changed(this, prevProp, newProp);
-        }
-    }
-
-    @Override
-    public Object put(IEnum.Properties key, Object value) {
-        NaturalProperty previousProp = this.naturalClone();
-
-        Object res = super.put(key, value);
-
-        NaturalProperty newProp = this.naturalClone();
-
-        CallListeners(previousProp, newProp);
-
-        return res;
-
-    }
+public class HashProperty extends NaturalProperty  {
 
     public NaturalProperty naturalClone() {
         return (NaturalProperty) this.clone();
@@ -118,23 +81,26 @@ public class HashProperty extends NaturalProperty implements ObservableValue<Nat
         return (double) this.get(IEnum.Properties.Rotation);
     }
 
-    // UIRatio
-    public void setUIRatio(double val) {
-        this.put(IEnum.Properties.UIRatio, val);
+    // SizeRatio
+    public void setSizeRatio(double val) {
+        this.put(IEnum.Properties.SizeRatio, val);
     }
 
-    public double getUIRatio() {
-        return (double) this.get(IEnum.Properties.UIRatio);
+    public double getSizeRatio() {
+        return (double) this.get(IEnum.Properties.SizeRatio);
+    }
+
+    // SizeCorner
+    public void setSizeCorner(double val) {
+        this.put(IEnum.Properties.SizeCorner, val);
+    }
+
+    public double getSizeCorner() {
+        return (double) this.get(IEnum.Properties.SizeCorner);
     }
 
 
-    @Override
-    public void addListener(InvalidationListener invalidationListener) {
 
-    }
 
-    @Override
-    public void removeListener(InvalidationListener invalidationListener) {
 
-    }
 }
