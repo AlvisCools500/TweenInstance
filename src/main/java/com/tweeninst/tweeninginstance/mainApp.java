@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -44,34 +45,6 @@ public class mainApp extends Application {
         task.spawnTask(() -> OnStart());
     }
 
-    private void Repainter(Instance inst) {
-        HashMap<Integer, ArrayList<Instance>> listInst = new HashMap<>();
-        ArrayList<Integer> sortZ = new ArrayList<>();
-
-        HashChildren childrens = inst.childrens;
-
-        // Sorting ZIndexes
-        for (var a : childrens.entrySet()) {
-            Instance v = a.getValue();
-
-            int ZIndex = v.properties.getZIndex();
-
-            if (listInst.get(ZIndex) == null) {
-                listInst.put(ZIndex, new ArrayList<>());
-                sortZ.add(ZIndex);
-            }
-
-            listInst.get(ZIndex).add(v);
-        }
-
-        // Draw
-
-        for (var a : listInst.entrySet()) {
-            
-        }
-
-    }
-
     public static void main(String[] args) {launch();}
 
     @Override
@@ -81,7 +54,34 @@ public class mainApp extends Application {
 
     private void OnStart() {
         Frame frame = new Frame();
-        frame.properties.setSize(new UDim2(0.4,0,0.4,0));
+
+        ArrayList<Tween> arrTween = new ArrayList<>();
+
+        arrTween.add(new Tween(frame, 0.2, EasingService.EasingStyle.EXPONENTIAL, EasingService.EasingDirection.OUT));
+        arrTween.get(0).propertyTarg.setSize(new UDim2(0.3, 0, 0.3, 0));
+
+        arrTween.add(new Tween(frame, 0.4, EasingService.EasingStyle.EXPONENTIAL, EasingService.EasingDirection.IN));
+        arrTween.get(1).propertyTarg.setSize(new UDim2(0.5, 0, 0.5, 0));
+
+        arrTween.add(new Tween(frame, 1, EasingService.EasingStyle.ELASTIC, EasingService.EasingDirection.OUT));
+        arrTween.get(2).propertyTarg.setSize(new UDim2(0.7, 0, 0.7, 0));
+
+        task.Wait(1);
+
+        for (int i=0; i<=arrTween.size()-1; i++) {
+            arrTween.get(i).play();
+            arrTween.get(i).waitEnd();
+        }
+
+        for (int i = arrTween.size() - 1; i>=0; i--) {
+            arrTween.get(i).Destroy(false);
+            arrTween.set(i, null);
+            arrTween.remove(i);
+        }
+
+        arrTween.clear();
+
+
     }
 
 }

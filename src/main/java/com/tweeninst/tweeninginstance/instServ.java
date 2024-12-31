@@ -18,9 +18,9 @@ import java.util.*;
 public class instServ {
     public static void setDefaults(HashProperty prop) {
         prop.setPosition(new UDim2(0.5,0,0.5,0));
-        prop.setColor(Color.rgb(255,255,255));
+        prop.setColor(Color.rgb(0,0,0));
         prop.setRotation(0);
-        prop.setSize(new UDim2(0.2, 0, 0.2, 0));
+        prop.setSize(new UDim2(0.5, 0, 0.5, 0));
         prop.setTransparency(1);
         prop.setAnchorPoint(new VectorDouble2D(0.5,0.5));
         prop.setZIndex(0);

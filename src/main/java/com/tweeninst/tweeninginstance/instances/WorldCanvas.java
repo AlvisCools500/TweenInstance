@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class WorldCanvas extends Pane {
     private HashMap<UUID, Instance> ListAdded = new HashMap<>();
-    HashMap<Integer, ArrayList<Instance>> ListInstance = new HashMap<>();
+
 
     private void clearChildren() {
         Platform.runLater(() -> {
@@ -24,22 +24,37 @@ public class WorldCanvas extends Pane {
         System.out.println("Updating");
 
         clearChildren();
-        ListInstance.clear();
 
-
-        ArrayList<Integer> sortedZ = new ArrayList<>();
+        NonInstance ultraInst = new NonInstance();
 
         for (var a : ListAdded.entrySet()) {
-            Instance v = ListAdded.get(a.getKey());
+            Instance inst = ListAdded.get(a.getKey());
 
-            int ZIndex = v.properties.getZIndex();
+            ultraInst.childrens.put(inst.uuid,inst);
+        }
 
-            if (ListInstance.get(ZIndex) == null) {
-                ListInstance.put(ZIndex, new ArrayList<>());
-                sortedZ.add(ZIndex);
+        recursiveRoot(ultraInst);
+
+        System.out.println("Root Updated! " + ListAdded.size() + " Total");
+    }
+
+    private void recursiveRoot(Instance mainparent) {
+        HashMap<Integer, ArrayList<Instance>> ListInstance = new HashMap<>();
+        ArrayList<Integer> sortedZ = new ArrayList<>();
+
+        for (var a : mainparent.childrens.entrySet()) {
+            Instance v = mainparent.childrens.get(a.getKey());
+
+            if (v.properties.get(IEnum.Properties.ZIndex) != null) {
+                int ZIndex = v.properties.getZIndex();
+
+                if (ListInstance.get(ZIndex) == null) {
+                    ListInstance.put(ZIndex, new ArrayList<>());
+                    sortedZ.add(ZIndex);
+                }
+
+                ListInstance.get(ZIndex).add(v);
             }
-
-            ListInstance.get(ZIndex).add(v);
         }
 
         sortedZ.sort(Integer::compareTo);
@@ -51,13 +66,16 @@ public class WorldCanvas extends Pane {
                     Platform.runLater(() -> {
                         this.getChildren().add(inst.objectAbstract);
                     });
+
+                    if (inst.childrens.size() > 0) {
+                        System.out.println("instance have children detected!");
+                        this.recursiveRoot(inst);
+                    }
                 }else {
                     System.out.println("This instance has no Abstract");
                 }
             }
         }
-
-        System.out.println("Root Updated! " + ListAdded.size() + " Total");
     }
 
     public void addInstance(Instance inst) {
@@ -74,33 +92,9 @@ public class WorldCanvas extends Pane {
 
     public void removeInstance(Instance inst) {
         System.out.println("remove trigger");
+
         if (ListAdded.get(inst.uuid) != null) {
             ListAdded.remove(inst.uuid);
-
-            for (var a : ListInstance.entrySet()) {
-                boolean fond = false;
-                ArrayList<Instance> arrayInst = ListInstance.get(a.getKey());
-
-                for (int index=arrayInst.size() - 1; index>=0; index++) {
-
-                    Instance v = arrayInst.get(index);
-
-                    if (v.uuid == inst.uuid) {
-                        arrayInst.remove(index);
-                        fond = true;
-                        break;
-                    }
-                }
-
-                if (arrayInst.size() < 1) {
-                    ListInstance.remove(a.getKey());
-                }
-
-                if (fond) {
-                    break;
-                }
-            }
-
             updateRoot();
         }
     }

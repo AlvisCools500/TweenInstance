@@ -24,6 +24,10 @@ public class World extends Instance {
         TargetCanvas.addInstance(targInst);
     }
 
+    public void callUpdateRoot() {
+        TargetCanvas.updateRoot();
+    }
+
     @Override
     public void removeChild(Instance targInst) {
         TargetCanvas.removeInstance(targInst);
