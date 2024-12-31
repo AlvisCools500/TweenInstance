@@ -55,32 +55,22 @@ public class mainApp extends Application {
     private void OnStart() {
         Frame frame = new Frame();
 
-        ArrayList<Tween> arrTween = new ArrayList<>();
+        TweenChains myChain = new TweenChains();
 
-        arrTween.add(new Tween(frame, 0.2, EasingService.EasingStyle.EXPONENTIAL, EasingService.EasingDirection.OUT));
-        arrTween.get(0).propertyTarg.setSize(new UDim2(0.3, 0, 0.3, 0));
+        myChain.addKey(frame, 0.2, EasingService.EasingStyle.EXPONENTIAL, EasingService.EasingDirection.OUT);
+        myChain.addKey(frame, 0.25, EasingService.EasingStyle.EXPONENTIAL, EasingService.EasingDirection.IN);
+        myChain.addKey(frame, 0.25, EasingService.EasingStyle.CUBIC, EasingService.EasingDirection.OUT);
 
-        arrTween.add(new Tween(frame, 0.4, EasingService.EasingStyle.EXPONENTIAL, EasingService.EasingDirection.IN));
-        arrTween.get(1).propertyTarg.setSize(new UDim2(0.5, 0, 0.5, 0));
-
-        arrTween.add(new Tween(frame, 1, EasingService.EasingStyle.ELASTIC, EasingService.EasingDirection.OUT));
-        arrTween.get(2).propertyTarg.setSize(new UDim2(0.7, 0, 0.7, 0));
+        myChain.updateProperty.setSize(new UDim2(0.2, 0, 0.2 ,0));
+        myChain.pushKey(0, true);
+        myChain.updateProperty.setSize(new UDim2(0.4, 0, 0.4 ,0));
+        myChain.pushKey(1, true);
+        myChain.updateProperty.setSize(new UDim2(0.6, 0, 0.6 ,0));
+        myChain.pushKey(2, true);
 
         task.Wait(1);
 
-        for (int i=0; i<=arrTween.size()-1; i++) {
-            arrTween.get(i).play();
-            arrTween.get(i).waitEnd();
-        }
-
-        for (int i = arrTween.size() - 1; i>=0; i--) {
-            arrTween.get(i).Destroy(false);
-            arrTween.set(i, null);
-            arrTween.remove(i);
-        }
-
-        arrTween.clear();
-
+        myChain.play();
 
     }
 

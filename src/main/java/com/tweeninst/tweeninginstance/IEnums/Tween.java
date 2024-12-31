@@ -146,7 +146,7 @@ public class Tween {
     public void Destroy(boolean waitEnd) {
 
         if (this.isPlaying) {
-            if (waitEnd) {
+            if (!waitEnd) {
                 this.stop();
             }else {
                 this.waitEnd();
