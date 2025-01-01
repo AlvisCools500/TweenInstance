@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.tweeninst.tweeninginstance.IEnums.*;
 import com.tweeninst.tweeninginstance.instances.*;
@@ -53,7 +54,7 @@ public class mainApp extends Application {
     }
 
     private void OnStart() {
-        Frame frame = new Frame();
+        /*Frame frame = new Frame();
 
         TweenChains myChain = new TweenChains();
 
@@ -70,7 +71,24 @@ public class mainApp extends Application {
 
         task.Wait(1);
 
-        myChain.play();
+        myChain.play();*/
+
+        List<String> lines = null;
+
+        try {
+           lines = CustomConfigParser.readConfig("src/main/examples/SizingUp.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (lines != null) {
+            HashMap<String, Object> vars = new HashMap<>();
+
+            for (String line : lines) {
+                CustomConfigParser.parseLine(line.trim(), vars);
+            }
+        }
+
 
     }
 

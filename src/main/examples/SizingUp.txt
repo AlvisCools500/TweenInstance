@@ -1,0 +1,18 @@
+inst myframe:Frame
+
+t tween1:myframe/0.1/EXPONENTIAL/OUT
+t tween2:myframe/0.25/EXPONENTIAL/IN
+t tween3:myframe/0.5/ELASTIC/OUT
+
+propset tween1:Size/UDim2(0.3,0.0,0.3,0.0)
+propset tween2:Size/UDim2(0.5,0.0,0.5,0.0)
+propset tween3:Size/UDim2(0.7,0.0,0.7,0.0)
+
+wait n:1.0
+
+play t:tween1
+wait t:tween1
+play t:tween2
+wait t:tween2
+play t:tween3
+wait t:tween3

@@ -1,0 +1,7 @@
+inst frame:Frame
+frame Size:UDim2(0.2,0.0,0.2,0.0)
+t frameTween:frame/0.5/EXPONENTIAL/OUT
+propset frameTween:Size/UDim2(0.7,0.0,0.7,0.0)
+wait n:1.0
+play t:frameTween
+wait t:frameTween
